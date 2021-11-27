@@ -55,6 +55,9 @@ const config = function (environment, arguments_) {
                 __APP_NAME__: JSON.stringify('BoilerPlate'),
                 __TWO__: 2,
                 __ONE_SECOND__: 1000,
+                __200_OK__: 200,
+                __400_BAD_REQUEST__: 400,
+                __404_NOT_FOUND__: 404
             }),
             new HtmlWebpackPlugin({
                 title: package_.name || 'Webpack App',

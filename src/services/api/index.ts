@@ -1,1 +1,3 @@
-export { default } from './getQuote'
+export { default as getInitialPatientsList } from './getPatientsList'
+
+export { default as getQuote } from './getQuote'

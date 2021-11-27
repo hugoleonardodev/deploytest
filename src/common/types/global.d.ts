@@ -16,3 +16,7 @@ declare const __API_URL__: string
 declare const __TWO__ = 2
 
 declare const __ONE_SECOND__ = 1000
+
+declare const __200_OK__ = 200
+declare const __400_BAD_REQUEST__ = 400
+declare const __404_NOT_FOUND__ = 404
