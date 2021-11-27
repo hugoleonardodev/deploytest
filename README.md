@@ -222,7 +222,7 @@ Build production mode:
 npm run build
 ```
 
-Build and Run within a Docker Container:
+Build and Run within a 🐋 Docker Container:
 
 ```
 sudo docker build --tag react . && sudo docker run --publish 5010:5010 react
@@ -256,6 +256,12 @@ SCSS files:
 npx stylelint **/*.scss
 ```
 
+styles.ts files:
+
+```
+npx stylelint **/*.styles.ts
+```
+
 TypeScript files:
 
 ```
@@ -279,8 +285,8 @@ package.json
 ```json
 "husky": {
     "hooks": {
-        "pre-commit": "npm lint", // already implemented or check how to install section
-        "pre-push": "npm test" // to be implemented or feel free to do it with npx husky add .husky/pre-push "npm test"
+        "pre-commit": "npm lint",
+        "pre-push": "npm test"
     }
 },
 
@@ -814,7 +820,25 @@ For components, layouts, and pages
 
 ### Why Redux not Context API ???
 
+-   Supposing this application will scale and grow larger, Redux is more recommended.
+-   Even though we have to write more code, Redux is easier to understand. Because it organises better the state management.
+-   A lot of people know how to use Redux. Specially if this person cames from another language/framework. Context is only for React.
+-   Context is a very rencent API. Only full available from React 16.8 to above.
+
+-   Useful resourcers:
+    - [Redux-vs-Context](https://academind.com/tutorials/reactjs-redux-vs-context-api)
+    - [Context-Redux-differences](https://blog.isquaredsoftware.com/2021/01/context-redux-differences)
+    - [Useing-hooks-and-context-not-react-and-redux](https://blog.logrocket.com/use-hooks-and-context-not-react-and-redux)
+    - [Redux-vs-Context-why-and-where](https://dev.to/m0rfes/redux-vs-context-why-and-where-3l2j)
+    - [Starting-a-new-app-with-redux-consider-context-api-first](https://auth0.com/blog/starting-a-new-app-with-redux-consider-context-api-first)
+    - [Redux-vs-Context-why-and-where](https://dev.to/m0rfes/redux-vs-context-why-and-where-3l2j)
+    - [Redux-vs-react-context-PT-BE](https://medium.com/@hnordt/redux-vs-react-context-87a7053c12df)
+
 ### What is the folder `common/` for ???
+
+-   Common is a place for `assets`, `functions`, `hooks`, `themes`, `types`, and wahtever you may need to share with the rest of the application.
+-   Is also useful to place third party libraries configurations and setups. Keeping it on a place where you know where to find.
+-   Good place for reusable code. In order to keep the application simple and dry. And reducing responsabilities from components.
 
 ---
 
