@@ -116,45 +116,45 @@ If you have run out of energy or time for your project, put a note at the top of
 # 📜 Summary
 
 -   [How to run this app](#-how-to-run-this-app)
-    -   [Node Package Manager](#-node-package-manager)
-    -   [Node Version Manager](#-node-version-manager)
-    -   [Install packages](#-install-packages)
-    -   [Run on Development](#%EF%B8%8F-run-on-development)
-    -   [Build Production](#-build-production)
-    -   [Run Tests](#-run-tests)
-    -   [Linting](#-linting)
+    -   Node Package Manager
+    -   Node Version Manager
+    -   Install packages
+    -   Run on Development
+    -   Build Production
+    -   Run Tests
+    -   Linting
 -   [Built with](#-built-with)
-    -   [Node Package Manager](#-node-package-manager)
-    -   [Node Version Manager](#-node-version-manager)
-    -   [Node](#-node)
-    -   [React](#-react)
-    -   [Typescript](#-typescript)
-    -   [Webpack](#-webpack)
-    -   [Babel](#-babel)
-    -   [SASS](#-sass)
-    -   [React Router DOM](#-react-router-dom)
-    -   [Axios](#-axios)
-    -   [ES Lint](#-es-lint)
-    -   [Jest](#-jest)
-    -   [Husky](#-husky)
+    -   Node Package Manager
+    -   Node Version Manager
+    -   Node
+    -   React
+    -   Typescript
+    -   Webpack
+    -   Babel
+    -   SASS
+    -   React Router DOM -router-dom
+    -   Axios
+    -   ES Lint
+    -   Jest
+    -   Husky
 -   [Folder structure](#-folder-structure)
-    -   [Atomic Design](#-atomic-design)
-    -   [Adapting from Atomic Design](#-adapting-from-atomic-design)
-    -   [Suggested folder structure](#-suggested-folder-structure)
-    -   [Root and src folders](#-root-and-src-folders)
-    -   [Tests folder](#-tests-folder)
+    -   Atomic Design
+    -   Adapting from Atomic Design
+    -   Suggested folder structure
+    -   Root and src folders
+    -   Tests folder
 -   [Questions and answers](#%EF%B8%8F-questions-and-answers)
-    -   [Why TypeScript](#-why-typescript)
-    -   [What is Webpack](#-what-is-webpack)
-    -   [What is Babel](#-what-is-babel)
-    -   [What is ES Lint](#-what-is-es-lint)
-    -   [What is Prettier](#-what-is-prettier)
-    -   [What is Stylelint](#-what-is-stylelint)
-    -   [What is .editorconfig](#-what-is-editorconfig)
-    -   [Why SASS](#-why-sass)
-    -   [Why index ejs](#-why-index)
-    -   [Why tests folder](#-why-we-have-this-ugly)
-    -   [Why Husky](#-why-husky)
+    -   Why TypeScript
+    -   What is Webpack
+    -   What is Babel
+    -   What is ES Lint
+    -   What is Prettier
+    -   What is Stylelint
+    -   What is .editorconfig
+    -   Why SASS
+    -   Why index.ejs
+    -   Why `__tests__` folder
+    -   Why Husky
 -   [Troubleshooting](#%EF%B8%8F-troubleshooting)
 -   [To do](#-to-do)
 -   [Recommended IDE extensions](#-recommended-ide-extensions)
@@ -220,6 +220,12 @@ Build production mode:
 
 ```
 npm run build
+```
+
+Build and Run within a Docker Container:
+
+```
+sudo docker build --tag react . && sudo docker run --publish 5010:5010 react
 ```
 
 ### 🧪 Run Tests
@@ -431,11 +437,12 @@ package.json
         -   [css-loader](https://webpack.js.org/loaders/css-loader)
         -   [sass-loader](https://webpack.js.org/loaders/sass-loader)
 
+-   To import Bootstrap SCSS and normalize CSS
+
 /App.scss
 
 ```scss
-@use 'pages/HomePage/HomePage';
-@use 'pages/WorksPage/WorksPage';
+@import '~bootstrap/scss/bootstrap';
 
 * {
     box-sizing: border-box;
@@ -447,6 +454,8 @@ body {
     height: 100vh;
     width: 100vw;
 }
+
+...
 ```
 
 -   [React Router DOM](https://reactrouter.com/web/guides/quick-start)
@@ -455,25 +464,68 @@ body {
 
 ```tsx
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
-import HomePage from 'pages/HomePage'
-import WorksPage from 'pages/WorksPage'
+const HomePage = React.lazy(() => import('@pages/HomePage'))
 
 const Routes: React.FC = () => {
     return (
-        <Router>
-            <Switch>
-                <Route path="/" exact={true} component={HomePage} />
-            </Switch>
-            <Switch>
-                <Route path="/works" exact={true} component={WorksPage} />
-            </Switch>
-        </Router>
+        <Switch>
+            <Route exact path="/">
+                <React.Suspense fallback={<div>Carregando...</div>}>
+                    <HomePage />
+                </React.Suspense>
+            </Route>
+        </Switch>
     )
 }
 
 export default Routes
+
+```
+
+-   /App.tsx
+
+```jsx
+import { ConnectedRouter } from 'connected-react-router'
+import React from 'react'
+import { Provider as ReduxStoreProvider } from 'react-redux'
+import styled, { ThemeProvider } from 'styled-components'
+
+import goodContrastTheme from '@common/themes/goodContrastTheme'
+
+import Routes from './Routes'
+import store, { history } from './store'
+
+import './App.scss'
+
+const App: React.FC = () => {
+    return (
+        <ReduxStoreProvider store={store}>
+            <AppProviders>
+                <Routes />
+            </AppProviders>
+        </ReduxStoreProvider>
+    )
+}
+
+export default App
+
+export const RootThemeWrapper = styled.div`
+    background: ${({ theme }) => theme.colors.background.light};
+    color: ${({ theme }) => theme.colors.text.light};
+`
+
+export const AppProviders: React.FC = ({ children }) => {
+    return (
+        <ThemeProvider theme={goodContrastTheme}>
+            <ConnectedRouter history={history}>
+                <RootThemeWrapper>{children}</RootThemeWrapper>
+            </ConnectedRouter>
+        </ThemeProvider>
+    )
+}
+
 ```
 
 -   [Axios](https://axios-http.com/docs/intro)
@@ -580,18 +632,18 @@ For components, layouts, and pages
 
 ```
     ├── HeaderComponent/
-    │       ├── _HeaderComponent.scss
     │       ├── HeaderComponent.tsx
+    │       ├── index.(scss|styles.ts)
     │       └── index.ts
    ...
     ├── HomeLayout/
-    │       ├── _HomeLayout.scss
     │       ├── HomeLayout.tsx
+    │       ├── index.(scss|styles.ts)
     │       └── index.ts
    ...
     ├── HomePage/
-    │       ├── _HomePage.scss
     │       ├── HomePage.tsx
+    │       ├── index.(scss|styles.ts)
     │       └── index.ts
 ```
 
@@ -614,7 +666,8 @@ For components, layouts, and pages
     │    ├── App.scss
     │    ├── App.tsx
     │    ├── index.ejs
-    │    └── index.tsx
+    │    ├── index.tsx
+    │    └── Routes.tsx
     ├── .editorconfig
     ├── .eslintignore
     ├── .eslintrc.json
@@ -626,8 +679,11 @@ For components, layouts, and pages
     ├── .stylelintignore
     ├── .stylelintrc.json
     ├── babel.config.js
+    ├── docker-compose.yml
+    ├── Dockerfile
     ├── package-lock.json
     ├── package.json
+    ├── postcss.config.js
     ├── README.md
     ├── tsconfig.json
     ├── webpack.config.js
@@ -642,9 +698,8 @@ For components, layouts, and pages
 ```
   pages/
     ├── HomePage/
-    │       ├── _HomePage.scss
     │       ├── HomePage.tsx
-    │       ├── HomePageMDC.js
+    │       ├── index.(scss|styles.ts)
     │       └── index.ts
    ...
 ```
@@ -672,12 +727,14 @@ For components, layouts, and pages
     __tests__/app/components/atoms/InnerLink.(test|spec).tsx
     __tests__/app/components/atoms/ListItem.(test|spec).tsx
     __tests__/app/components/atoms/OuterLink.(test|spec).tsx
+
     __tests__/app/components/molecules/TechList.(test|spec).tsx
+
     __tests__/app/components/organisms/HomeNav.(test|spec).tsx
 
-    __tests__/app/layouts/organisms/HomeMain.(test|spec).tsx
+    __tests__/app/layouts/HomeMain.(test|spec).tsx
 
-    __tests__/app/pages/organisms/HomePage.(test|spec).tsx
+    __tests__/app/pages/HomePage.(test|spec).tsx
 ```
 
 ---
@@ -744,7 +801,7 @@ For components, layouts, and pages
 ### Why we have this ugly `__tests__` folder ???
 
 -   The main idea here is to keep all files related to tests separated from others `src` folder files. By doing this, we prevent Webpack
-    to load files with .test and .spec extensios. And other files that are only useful on test environment. Like mocks, Provider and jest-setup
+    to load files with .test and .spec extensions. And other files that are only useful on test environment. Like mocks, Provider and jest-setup
     from utils.
 -   `coverage` is a special folder that comes in when any test is runned. This is an automatic configuration placed on `jest.config.js` on key `coverageDirectory`
 -   Unit tests will be applied to components, layouts, and pages.
@@ -765,27 +822,23 @@ For components, layouts, and pages
 
 -   On deploy, you must set build production folder to `dist/` instead of `/`.
 
--   Open an issue ⚠️
-
 ---
 
 # 📑 To do
 
--   Configure Cypress for End-to-End tests
-
--   Implement Husky pre-push hook with tests
+-   To Do
 
 ---
 
 # 👉 Recommended IDE extensions
 
-<img src="/src/common/assets/vs-code-extensions-1.png" alt="vs-code-extensions-1" />
+<img src="/public/assets/vs-code-extensions-1.png" alt="vs-code-extensions-1" />
 
-<img src="/src/common/assets/vs-code-extensions-2.png" alt="vs-code-extensions-2" />
+<img src="/public/assets/vs-code-extensions-2.png" alt="vs-code-extensions-2" />
 
-<img src="/src/common/assets/vs-code-extensions-3.png" alt="vs-code-extensions-3" />
+<img src="/public/assets/vs-code-extensions-3.png" alt="vs-code-extensions-3" />
 
-<img src="/src/common/assets/vs-code-extensions-4.png" alt="vs-code-extensions-4" />
+<img src="/public/assets/vs-code-extensions-4.png" alt="vs-code-extensions-4" />
 
 ---
 
@@ -794,113 +847,5 @@ For components, layouts, and pages
 settings.json
 
 ```json
-{
-    "[css]": {
-        "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": false,
-            "source.fixAll.stylelint": true
-        }
-    },
-    "[html]": {
-        "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": true,
-            "source.fixAll.stylelint": true
-        }
-    },
-    "auto-close-tag.activationOnLanguage": ["*"],
-    "code-runner.clearPreviousOutput": true,
-    "code-runner.runInTerminal": true,
-    "editor.autoClosingBrackets": "always",
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true,
-        "source.fixAll.stylelint": true
-        // "source.fixAll.prettier": false
-    },
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "editor.suggestSelection": "first",
-    "editor.tabCompletion": "on",
-    "editor.tabSize": 4,
-    "emmet.showSuggestionsAsSnippets": true,
-    "emmet.includeLanguages": {
-        "javascript": "javascriptreact",
-        "ejs": "html"
-    },
-    "files.associations": {
-        "*.md": "mdx"
-    },
-    "files.exclude": {
-        "**/.classpath": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.factorypath": true
-    },
-    "git.autoRepositoryDetection": "openEditors",
-    "gitlens.gitCommands.search.showResultsInSideBar": true,
-    "gitlens.hovers.annotations.over": "annotation",
-    "gitlens.hovers.annotations.changes": false,
-    "gitlens.hovers.annotations.details": false,
-    "gitlens.hovers.autolinks.enabled": false,
-    "gitlens.hovers.autolinks.enhanced": false,
-    "gitlens.hovers.avatars": false,
-    "gitlens.hovers.currentLine.changes": false,
-    "gitlens.hovers.currentLine.enabled": false,
-    "gitlens.hovers.currentLine.details": false,
-    "gitlens.hovers.pullRequests.enabled": false,
-    "importCost.smallPackageSize": 10,
-    "importCost.mediumPackageSize": 20,
-    "importCost.mediumPackageColor": "#CCBC00",
-    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
-    "javascript.updateImportsOnFileMove.enabled": "always",
-    "liveServer.settings.donotVerifyTags": true,
-    "material-icon-theme.folders.associations": {
-        "widgets": "components",
-        "front-angular": "font",
-        "front-react": "React-Components",
-        "front-vue": "vue",
-        "store": "Redux-store",
-        "actions": "redux-actions",
-        "reducers": "redux-reducer",
-        "atoms": "React-components",
-        "molecules": "Node",
-        "organisms": "Other",
-        "favicons": "Admin"
-    },
-    "prettier.singleQuote": true,
-    "prettier.trailingComma": "none",
-    "prettier.bracketSpacing": true,
-    "typescript.updateImportsOnFileMove.enabled": "always",
-    "terminal.integrated.defaultProfile.linux": "/bin/zsh (migrated)",
-    "terminal.integrated.profiles.linux": {
-        "bash": {
-            "path": "bash",
-            "icon": "terminal-bash"
-        },
-        "zsh": {
-            "path": "zsh"
-        },
-        "fish": {
-            "path": "fish"
-        },
-        "tmux": {
-            "path": "tmux",
-            "icon": "terminal-tmux"
-        },
-        "pwsh": {
-            "path": "pwsh",
-            "icon": "terminal-powershell"
-        },
-        "bash (2)": {
-            "path": "/usr/bin/bash"
-        },
-        "/bin/zsh (migrated)": {
-            "path": "/bin/zsh",
-            "args": []
-        }
-    },
-    "window.zoomLevel": -1.0455173977264463,
-    "workbench.colorTheme": "Dracula",
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.tree.indent": 20
-}
+
 ```
