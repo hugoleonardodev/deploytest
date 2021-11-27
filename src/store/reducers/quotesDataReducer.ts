@@ -1,18 +1,18 @@
 // import { Reducer } from 'redux'
-import { Quote, QuotesDataActionTypes } from '../constants/quotesDataTypes'
+import { IQuote, QuotesDataActionTypes } from '../constants/quotesDataTypes'
 
-export interface QuotesDataState {
-    data: Quote[]
+export interface IQuotesDataState {
+    data: IQuote[]
 }
 
-export interface QuotesDataAction {
+export interface IQuotesDataAction {
     type: string
-    payload: Quote[]
+    payload: IQuote[]
 }
 
 const initialState = { data: [{ text: 'a', author: 'b' }] }
 
-const quotesDataReducer = (state: QuotesDataState = initialState, action: QuotesDataAction): QuotesDataState => {
+const quotesDataReducer = (state: IQuotesDataState = initialState, action: IQuotesDataAction): IQuotesDataState => {
     switch (action.type) {
         case QuotesDataActionTypes.UPDATE_ALL:
             return { data: [...state.data, ...action.payload] }

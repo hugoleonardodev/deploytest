@@ -131,9 +131,17 @@
             },
             {
                 "selector": "variable",
-                "format": ["camelCase", "UPPER_CASE"],
+                "format": ["camelCase", "UPPER_CASE", "PascalCase"],
                 "types": ["boolean"],
                 "prefix": ["is", "IS_", "should", "SHOULD_", "has", "HAS_", "can", "CAN_", "did", "DID_", "will", "WILL_"],
+                "leadingUnderscore": "allowSingleOrDouble",
+                "trailingUnderscore": "allowSingleOrDouble"
+            },
+            {
+                "selector": "objectLiteralProperty",
+                "format": ["camelCase", "PascalCase"],
+                "types": ["boolean"],
+                "prefix": ["is", "IS_", "should", "SHOULD_", "has", "HAS_", "can", "CAN_", "did", "DID_", "will", "WILL_", "payload"],
                 "leadingUnderscore": "allowSingleOrDouble",
                 "trailingUnderscore": "allowSingleOrDouble"
             },

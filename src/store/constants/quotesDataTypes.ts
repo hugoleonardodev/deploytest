@@ -4,7 +4,7 @@
  * @author   author of the quote or unknown
  */
 
-export interface Quote {
+export interface IQuote {
     text: string
     author: string
 }
@@ -14,8 +14,8 @@ export interface Quote {
  * @data an array of quotes from https://type.fit/api/quotes
  */
 
-export interface QuoteData {
-    data: Quote[]
+export interface IQuoteData {
+    data: IQuote[]
 }
 
 /**
