@@ -871,5 +871,85 @@ For components, layouts, and pages
 settings.json
 
 ```json
+{
+  "auto-close-tag.activationOnLanguage": ["*"],
+  "code-runner.clearPreviousOutput": true,
+  "code-runner.runInTerminal": true,
+  "editor.autoClosingBrackets": "always",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll.stylelint": true
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+  "editor.tabSize": 4,
+  "emmet.showSuggestionsAsSnippets": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "ejs": "html"
+  },
+  "eslint.useESLintClass": true,
+  "eslint.workingDirectories": ["./"],
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "files.associations": {
+    "**/*.html": "html",
+    "*.md": "mdx"
+  },
+  "git.autoRepositoryDetection": "openEditors",
+  "gitlens.gitCommands.search.showResultsInSideBar": true,
+  "gitlens.hovers.annotations.over": "annotation",
+  "gitlens.hovers.annotations.changes": false,
+  "gitlens.hovers.annotations.details": false,
+  "gitlens.hovers.autolinks.enabled": false,
+  "gitlens.hovers.autolinks.enhanced": false,
+  "gitlens.hovers.avatars": false,
+  "gitlens.hovers.currentLine.changes": false,
+  "gitlens.hovers.currentLine.enabled": false,
+  "gitlens.hovers.currentLine.details": false,
+  "gitlens.hovers.pullRequests.enabled": false,
+  "importCost.smallPackageSize": 10,
+  "importCost.mediumPackageSize": 20,
+  "importCost.mediumPackageColor": "#CCBC00",
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "liveServer.settings.donotVerifyTags": true,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "material-icon-theme.folders.associations": {
+    "widgets": "components",
+    "front-angular": "font",
+    "front-react": "React-Components",
+    "front-vue": "vue",
+    "store": "Redux-store",
+    "actions": "redux-actions",
+    "reducers": "redux-reducer",
+    "atoms": "React-components",
+    "molecules": "Node",
+    "organisms": "Other",
+    "favicons": "Admin",
+    "modules": "Home",
+    "http": "Global",
+    "typeorm": "Database",
+    "migrations": "Expo",
+    "entities": "Class",
+    "repositories": "Log",
+    "requirements": "Rules"
+  },
+  "material-icon-theme.files.associations": {
+    "ormconfig.json": "Database"
+  },
+  "stylelint.validate": ["css", "scss"],
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "workbench.colorTheme": "Dracula",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.tree.indent": 20,
+  "window.zoomLevel": 0,
+}
 
 ```
