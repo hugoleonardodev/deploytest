@@ -1,13 +1,13 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import { promiseThunkAction } from '@store/actions/quotesActions'
+import { getInitialPatientsListThunk } from '@store/actions/patientsActions'
 
 const HomePage: React.FC = () => {
     const dispatch = useDispatch()
 
     React.useEffect(() => {
-        dispatch(promiseThunkAction())
+        dispatch(getInitialPatientsListThunk())
     }, [dispatch])
 
     return (

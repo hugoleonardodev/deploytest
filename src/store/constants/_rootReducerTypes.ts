@@ -1,10 +1,8 @@
-import { Quote } from './quotesDataTypes'
-
-export interface IQuoteData {
-    data: Quote[]
-}
+import { IUserConfigs } from './configsTypes'
+import { IPatientRootObject } from './patientsTypes'
 
 export interface IRootStateWithReducers {
-    quotes: IQuoteData
+    configs: IUserConfigs
+    patients: IPatientRootObject
     router: History
 }

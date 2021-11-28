@@ -1,12 +1,5 @@
 import { TConfigsActionsCreators } from '@store/actions/configsActions'
-import { ConfigsDataActions } from '@store/constants/configsTypes'
-
-export interface IUserConfig {
-    user: string
-    email: string
-    avatar: string
-    isDarkTheme: boolean
-}
+import { ConfigsDataActions, IUserConfigs } from '@store/constants/configsTypes'
 
 const initialState = {
     user: 'Hugo Leonardo',
@@ -15,7 +8,7 @@ const initialState = {
     isDarkTheme: false,
 }
 
-const configsReducer = (state: IUserConfig = initialState, action: TConfigsActionsCreators): IUserConfig => {
+const configsReducer = (state: IUserConfigs = initialState, action: TConfigsActionsCreators): IUserConfigs => {
     switch (action.type) {
         case ConfigsDataActions.SWITCH_THEME:
             return { ...state, isDarkTheme: action.payload }
