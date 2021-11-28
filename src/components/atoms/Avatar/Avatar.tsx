@@ -4,7 +4,17 @@ import { AvatarImage } from './Avatar.styles'
 
 type TAvatarProperties = React.HTMLProps<HTMLImageElement> & {
     avatarUrl: string
-    avatarSize: 'large' | 'medium'
+    avatarSize: 'large' | 'medium' | 'thumbnail'
+}
+
+const getAvatarSize = (avatarSize: 'large' | 'medium' | 'thumbnail') => {
+    if (avatarSize === 'thumbnail') {
+        return '48px'
+    }
+    if (avatarSize === 'medium') {
+        return '72px'
+    }
+    return '128px'
 }
 
 const Avatar: React.FC<TAvatarProperties> = ({ avatarUrl, avatarSize }) => {
@@ -12,8 +22,8 @@ const Avatar: React.FC<TAvatarProperties> = ({ avatarUrl, avatarSize }) => {
         <AvatarImage
             src={avatarUrl}
             alt={avatarUrl}
-            height={avatarSize === 'large' ? '128px' : '72px'}
-            width={avatarSize === 'large' ? '128px' : '72px'}
+            height={getAvatarSize(avatarSize)}
+            width={getAvatarSize(avatarSize)}
         />
     )
 }
