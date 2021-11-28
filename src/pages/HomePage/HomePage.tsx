@@ -1,8 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import Header from '@components/molecules/Header'
-import TablePatients from '@components/organisms/TablePatients'
+import HomeMain from '@layouts/HomeMain'
 import { getInitialPatientsListThunk } from '@store/actions/patientsActions'
 
 const HomePage: React.FC = () => {
@@ -12,12 +11,7 @@ const HomePage: React.FC = () => {
         dispatch(getInitialPatientsListThunk())
     }, [dispatch])
 
-    return (
-        <div>
-            <Header />
-            <TablePatients />
-        </div>
-    )
+    return <HomeMain />
 }
 
 export default HomePage
