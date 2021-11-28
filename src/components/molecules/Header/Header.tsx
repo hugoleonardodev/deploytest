@@ -36,7 +36,7 @@ const Header: React.FC = () => {
                             <Avatar avatarUrl={avatar} avatarSize="thumbnail" />
                             {user}
                         </DropdownToggle>
-                        <DropdownMenu right>
+                        <DropdownMenu end>
                             <DropdownItem>About</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem>Reset</DropdownItem>

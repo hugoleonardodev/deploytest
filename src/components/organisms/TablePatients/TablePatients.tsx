@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Table } from 'reactstrap'
 
+import ModalPatient from '@components/molecules/ModalPatient'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 
 const TablePatients: React.FC = () => {
@@ -20,7 +21,9 @@ const TablePatients: React.FC = () => {
             </thead>
             <tbody>
                 {results.length === 0 ? (
-                    <div>Loading...</div>
+                    <tr>
+                        <td>Loading...</td>
+                    </tr>
                 ) : (
                     results.map((patient, index) => (
                         <tr key={patient.login.uuid}>
@@ -29,14 +32,10 @@ const TablePatients: React.FC = () => {
                             <td>{patient.gender}</td>
                             <td>{patient.dob.date}</td>
                             <td>
-                                <tr>
-                                    <td>
-                                        <button>Details</button>
-                                    </td>
-                                    <td>
-                                        <button>Share</button>
-                                    </td>
-                                </tr>
+                                <ModalPatient patient={patient}>Details</ModalPatient>
+                            </td>
+                            <td>
+                                <button>Share</button>
                             </td>
                         </tr>
                     ))

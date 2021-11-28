@@ -64,7 +64,7 @@ declare namespace PatientsAPI {
     export interface IPatientData {
         gender: string
         name: IPatientName
-        location: Location
+        location: IPatientLocation
         email: string
         login: IPatientLogin
         dob: IPatientDayOfBirth
