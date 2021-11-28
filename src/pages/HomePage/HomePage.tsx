@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Avatar from '@components/atoms/Avatar'
 import Header from '@components/molecules/Header'
+import TablePatients from '@components/organisms/TablePatients'
 import { getInitialPatientsListThunk } from '@store/actions/patientsActions'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 
@@ -20,6 +21,7 @@ const HomePage: React.FC = () => {
             <h1>Docker App</h1>
             <h2>Home Page !!</h2>
             {isLoading ? <span>Loading...</span> : <Avatar avatarUrl={results[0].picture.large} avatarSize="large" />}
+            <TablePatients />
         </div>
     )
 }
