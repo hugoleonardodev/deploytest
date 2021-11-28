@@ -6,12 +6,15 @@ const initialState = {
     email: 'hugoleonardo.dev@gmail.com',
     avatar: 'https://github.com/hugoleonardodev.png',
     isDarkTheme: false,
+    isLoading: true,
 }
 
 const configsReducer = (state: IUserConfigs = initialState, action: TConfigsActionsCreators): IUserConfigs => {
     switch (action.type) {
         case ConfigsDataActions.SWITCH_THEME:
             return { ...state, isDarkTheme: action.payload }
+        case ConfigsDataActions.SET_IS_LOADING:
+            return { ...state, isLoading: action.payload }
         default:
             return state
     }

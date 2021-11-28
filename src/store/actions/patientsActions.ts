@@ -1,11 +1,14 @@
-import { Dispatch } from 'react'
+import { Dispatch } from 'redux'
 
 import { getInitialPatientsList, getPatientsByPage } from '@services/api'
-import { IPatientRootObject, PatientsDataActions } from '@store/constants/patientsTypes'
+import { ISetIsLoading } from '@store/constants/configsTypes'
+import { PatientsDataActions } from '@store/constants/patientsTypes'
+
+import { setIsLoading } from './configsActions'
 
 export interface IListPatientsAction {
     type: PatientsDataActions.INITIAL_LIST_PATIENTS
-    payload: IPatientRootObject
+    payload: PatientsAPI.IPatientRootObject
 }
 
 /**
@@ -15,7 +18,7 @@ export interface IListPatientsAction {
  * @returns returns an async `redux-thunk` function able to await for data and `dispatch` the result
  * @see https://randomuser.me/documentation
  */
-export const initialListPatients = (patientsData: IPatientRootObject): IListPatientsAction => ({
+export const initialListPatients = (patientsData: PatientsAPI.IPatientRootObject): IListPatientsAction => ({
     type: PatientsDataActions.INITIAL_LIST_PATIENTS,
     payload: patientsData,
 })
@@ -25,8 +28,7 @@ export const initialListPatients = (patientsData: IPatientRootObject): IListPati
  * @param none
  * @returns returns an async `redux-thunk` function able to await for data and `dispatch` the result
  * @example
- * getInitialPatientsListThunk =
- *  () =>
+ * getInitialPatientsListThunk() =>
  *   async (dispatch: Dispatch<IListPatientsAction>): Promise<void> => {
  *      const firstFiftyPatientsData = await getInitialPatientsList()
  *
@@ -39,17 +41,19 @@ export const initialListPatients = (patientsData: IPatientRootObject): IListPati
  */
 export const getInitialPatientsListThunk =
     () =>
-    async (dispatch: Dispatch<IListPatientsAction>): Promise<void> => {
+    async (dispatch: Dispatch<IListPatientsAction | ISetIsLoading>): Promise<void> => {
         const firstFiftyPatientsData = await getInitialPatientsList()
 
         if (firstFiftyPatientsData.status === __200_OK__) {
             dispatch(initialListPatients(firstFiftyPatientsData.data))
         }
+
+        dispatch(setIsLoading(false))
     }
 
 export interface IPaginationLoadPatientsAction {
     type: PatientsDataActions.PAGINATION_LOAD_PATIENTS
-    payload: IPatientRootObject
+    payload: PatientsAPI.IPatientRootObject
 }
 
 /**
@@ -59,7 +63,9 @@ export interface IPaginationLoadPatientsAction {
  * @returns returns an async `redux-thunk` function able to await for data and `dispatch` the result
  * @see https://randomuser.me/documentation
  */
-export const paginationLoadPatients = (patientsData: IPatientRootObject): IPaginationLoadPatientsAction => ({
+export const paginationLoadPatients = (
+    patientsData: PatientsAPI.IPatientRootObject,
+): IPaginationLoadPatientsAction => ({
     type: PatientsDataActions.PAGINATION_LOAD_PATIENTS,
     payload: patientsData,
 })
@@ -70,8 +76,7 @@ export const paginationLoadPatients = (patientsData: IPatientRootObject): IPagin
  * @default 1
  * @returns an object with the action `type` to `dispatch` redux store's patients pagination
  * @example
- * getInitialPatientsListThunk =
- *  (2) =>
+ * getInitialPatientsListThunk(2) =>
  *   async (dispatch: Dispatch<IPaginationLoadPatientsAction>): Promise<void> => {
  *      const moreFiftyPatientsData = await getPatientsByPage(2)
  *
@@ -84,12 +89,16 @@ export const paginationLoadPatients = (patientsData: IPatientRootObject): IPagin
  */
 export const getPatientsByPageThunk =
     (page = 1) =>
-    async (dispatch: Dispatch<IPaginationLoadPatientsAction>): Promise<void> => {
+    async (dispatch: Dispatch<IPaginationLoadPatientsAction | ISetIsLoading>): Promise<void> => {
+        dispatch(setIsLoading(true))
+
         const moreFiftyPatientsData = await getPatientsByPage(page)
 
         if (moreFiftyPatientsData.status === __200_OK__) {
             dispatch(paginationLoadPatients(moreFiftyPatientsData.data))
         }
+
+        dispatch(setIsLoading(false))
     }
 
 /**

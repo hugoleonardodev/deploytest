@@ -1,7 +1,7 @@
 import { TPatientsActionsCreators } from '@store/actions/patientsActions'
-import { IPatientRootObject, PatientsDataActions } from '@store/constants/patientsTypes'
+import { PatientsDataActions } from '@store/constants/patientsTypes'
 
-const initialState: IPatientRootObject = {
+const initialState: PatientsAPI.IPatientRootObject = {
     results: [],
     info: {
         seed: '',
@@ -12,9 +12,9 @@ const initialState: IPatientRootObject = {
 }
 
 const patientsReducer = (
-    state: IPatientRootObject = initialState,
+    state: PatientsAPI.IPatientRootObject = initialState,
     action: TPatientsActionsCreators,
-): IPatientRootObject => {
+): PatientsAPI.IPatientRootObject => {
     switch (action.type) {
         case PatientsDataActions.INITIAL_LIST_PATIENTS:
             return {
