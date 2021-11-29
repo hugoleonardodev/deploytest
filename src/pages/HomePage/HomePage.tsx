@@ -1,15 +1,16 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import HomeMain from '@layouts/HomeMain'
 import { getInitialPatientsListThunk } from '@store/actions/patientsActions'
-
+import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 const HomePage: React.FC = () => {
     const dispatch = useDispatch()
+    const { results } = useSelector((state: IRootStateWithReducers) => state.patients)
 
     React.useEffect(() => {
-        dispatch(getInitialPatientsListThunk())
-    }, [dispatch])
+        if (results.length === 0) dispatch(getInitialPatientsListThunk())
+    }, [dispatch, results.length])
 
     return <HomeMain />
 }

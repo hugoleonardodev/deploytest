@@ -53,6 +53,7 @@ const config = function (environment, arguments_) {
                 __IS_DEVELOPMENT__: JSON.stringify(isDevelopmentEnvironment),
                 __IS_PRODUCTION__: JSON.stringify(isProductionEnvironment),
                 __APP_NAME__: JSON.stringify('BoilerPlate'),
+                __APP_BASE_URL__: JSON.stringify('http://localhost:5010'),
                 __TWO__: 2,
                 __ONE_SECOND__: 1000,
                 __200_OK__: 200,

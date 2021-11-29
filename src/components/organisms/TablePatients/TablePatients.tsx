@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
 import { Table } from 'reactstrap'
 
 import ModalPatient from '@components/molecules/ModalPatient'
@@ -7,7 +8,13 @@ import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 
 const TablePatients: React.FC = () => {
     const { results } = useSelector((state: IRootStateWithReducers) => state.patients)
-
+    const history = useHistory()
+    const hanldeSharePatient = React.useCallback(
+        (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            history.push(`/patient/${event.currentTarget.value}`)
+        },
+        [history],
+    )
     return (
         <Table responsive>
             <thead>
@@ -35,7 +42,9 @@ const TablePatients: React.FC = () => {
                                 <ModalPatient patient={patient}>Details</ModalPatient>
                             </td>
                             <td>
-                                <button>Share</button>
+                                <button value={patient.login.uuid} onClick={hanldeSharePatient}>
+                                    Share
+                                </button>
                             </td>
                         </tr>
                     ))
