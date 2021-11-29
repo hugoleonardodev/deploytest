@@ -1,8 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useRouteMatch } from 'react-router'
+import { useHistory, useRouteMatch } from 'react-router'
 import { Button, Card, CardBody, CardGroup, CardImg, CardSubtitle, CardText, CardTitle } from 'reactstrap'
 
+import { useCopyToClipboard } from '@common/hooks'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 
 type TSharePatientPage = {
@@ -12,7 +13,15 @@ type TSharePatientPage = {
 const SharePatientPage: React.FC<TSharePatientPage> = () => {
     const { results } = useSelector((state: IRootStateWithReducers) => state.patients)
     const { url } = useRouteMatch()
+    const history = useHistory()
+    const [copiedText, setCopiedText] = useCopyToClipboard()
     const patientById = results.find(patient => patient.login.uuid === url.split('/')[2])
+    const handleCopyToClipboard = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        setCopiedText(event.currentTarget.value)
+    }
+    const handleGoBack = () => {
+        history.goBack()
+    }
     if (patientById) {
         return (
             <CardGroup>
@@ -52,7 +61,14 @@ const SharePatientPage: React.FC<TSharePatientPage> = () => {
                             {`${__APP_BASE_URL__}/patient/${patientById.login.uuid}`}
                         </CardSubtitle>
                         <CardText>Copy to clipboard:</CardText>
-                        <Button>Copy</Button>
+                        <Button
+                            onClick={handleCopyToClipboard}
+                            value={`${__APP_BASE_URL__}/patient/${patientById.login.uuid}`}
+                            disabled={!!copiedText}
+                        >
+                            Copy
+                        </Button>
+                        <Button onClick={handleGoBack}>Go Back</Button>
                     </CardBody>
                 </Card>
             </CardGroup>

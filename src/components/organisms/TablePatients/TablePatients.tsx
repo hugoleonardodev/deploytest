@@ -3,8 +3,12 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import { Table } from 'reactstrap'
 
+import Skeleton from '@components/atoms/Skeleton'
 import ModalPatient from '@components/molecules/ModalPatient'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
+
+const TEN = 10
+const skeletonsLines = [...Array.from({ length: TEN }).keys()]
 
 const TablePatients: React.FC = () => {
     const { results } = useSelector((state: IRootStateWithReducers) => state.patients)
@@ -27,28 +31,43 @@ const TablePatients: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {results.length === 0 ? (
-                    <tr>
-                        <td>Loading...</td>
-                    </tr>
-                ) : (
-                    results.map((patient, index) => (
-                        <tr key={patient.login.uuid}>
-                            <th scope="row">{index + 1}</th>
-                            <td>{`${patient.name.last}, ${patient.name.first}`}</td>
-                            <td>{patient.gender}</td>
-                            <td>{patient.dob.date}</td>
-                            <td>
-                                <ModalPatient patient={patient}>Details</ModalPatient>
-                            </td>
-                            <td>
-                                <button value={patient.login.uuid} onClick={hanldeSharePatient}>
-                                    Share
-                                </button>
-                            </td>
-                        </tr>
-                    ))
-                )}
+                {results.length === 0
+                    ? skeletonsLines.map((skeleton, index) => (
+                          <tr key={`patient-${index}-#${skeleton}`}>
+                              <th scope="row">{index + 1}</th>
+                              <td>
+                                  <Skeleton />
+                              </td>
+                              <td>
+                                  <Skeleton />
+                              </td>
+                              <td>
+                                  <Skeleton />
+                              </td>
+                              <td>
+                                  <Skeleton />
+                              </td>
+                              <td>
+                                  <Skeleton />
+                              </td>
+                          </tr>
+                      ))
+                    : results.map((patient, index) => (
+                          <tr key={`patient-${index}-id-${patient.login.uuid}`}>
+                              <th scope="row">{index + 1}</th>
+                              <td>{`${patient.name.last}, ${patient.name.first}`}</td>
+                              <td>{patient.gender}</td>
+                              <td>{patient.dob.date}</td>
+                              <td>
+                                  <ModalPatient patient={patient}>Details</ModalPatient>
+                              </td>
+                              <td>
+                                  <button value={patient.login.uuid} onClick={hanldeSharePatient}>
+                                      Share
+                                  </button>
+                              </td>
+                          </tr>
+                      ))}
             </tbody>
         </Table>
     )
