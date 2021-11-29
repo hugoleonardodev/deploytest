@@ -1,10 +1,28 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useHistory, useRouteMatch } from 'react-router'
-import { Button, Card, CardBody, CardGroup, CardImg, CardSubtitle, CardText, CardTitle } from 'reactstrap'
+import {
+    Button,
+    Card,
+    CardBody,
+    CardGroup,
+    CardImg,
+    CardSubtitle,
+    CardText,
+    CardTitle,
+    UncontrolledTooltip,
+} from 'reactstrap'
 
+import { ReactComponent as BackIcon } from '@common/assets/back.svg'
+import { ReactComponent as CopyIcon } from '@common/assets/copy.svg'
+import { ReactComponent as LocationIcon } from '@common/assets/location.svg'
+import { ReactComponent as ProfileIcon } from '@common/assets/profile.svg'
+import { ReactComponent as ShareBigIcon } from '@common/assets/share_big.svg'
+import { getUsDateFormat } from '@common/functions'
 import { useCopyToClipboard } from '@common/hooks'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
+
+import { SharedPatientButtonsContainer } from './SharedPatientPage.styles'
 
 type TSharePatientPage = {
     patientId?: string
@@ -28,47 +46,87 @@ const SharePatientPage: React.FC<TSharePatientPage> = () => {
                 <Card>
                     <CardImg alt={patientById.picture.large} src={patientById.picture.large} top width="100%" />
                     <CardBody>
-                        <CardTitle tag="h5">{`${patientById.name.first} ${patientById.name.last}`}</CardTitle>
+                        <CardTitle tag="h5">{`${patientById.name.title} ${patientById.name.first} ${patientById.name.last}`}</CardTitle>
                         <CardSubtitle className="mb-2 text-muted" tag="h6">
-                            {patientById.login.uuid}
+                            {patientById.gender}
                         </CardSubtitle>
-                        <CardText>{patientById.email}</CardText>
-                        <CardText>{patientById.phone}</CardText>
                     </CardBody>
                 </Card>
                 <Card>
                     <CardBody>
-                        <CardTitle tag="h5">{patientById.gender}</CardTitle>
+                        <CardTitle tag="h5">
+                            <ProfileIcon /> Profile
+                        </CardTitle>
                         <CardSubtitle className="mb-2 text-muted" tag="h6">
-                            {patientById.dob.date}
+                            <strong>ID:</strong> {patientById.login.uuid}
                         </CardSubtitle>
-                        <CardText>{patientById.nat}</CardText>
+                        <CardText>
+                            <strong>Date of Birth:</strong> {getUsDateFormat(patientById.dob.date)}
+                        </CardText>
+                        <CardText>
+                            <strong>Nationality:</strong> {patientById.nat}
+                        </CardText>
+                        <CardText>
+                            <strong>E-mail:</strong>
+                            {patientById.email}
+                        </CardText>
                     </CardBody>
                 </Card>
                 <Card>
                     <CardBody>
-                        <CardTitle tag="h5">{`${patientById.location.street.name}, ${patientById.location.street.number}`}</CardTitle>
+                        <CardTitle tag="h5">
+                            <LocationIcon /> Location
+                        </CardTitle>
                         <CardSubtitle className="mb-2 text-muted" tag="h6">
-                            {`${patientById.location.city}, ${patientById.location.state} `}
+                            <strong>Address:</strong>{' '}
+                            {`${patientById.location.street.name}, ${patientById.location.street.number}, ${patientById.location.city}, ${patientById.location.state}`}
                         </CardSubtitle>
-                        <CardText>{patientById.location.postcode}</CardText>
+                        <CardText>
+                            <strong>Post Code:</strong> {patientById.location.postcode}
+                        </CardText>
+                        <CardText>
+                            <strong>Country:{'  '}</strong> {patientById.location.country}
+                        </CardText>
+                        <CardText>
+                            <strong>Time Zone:{'  '}</strong> {patientById.location.timezone.offset}
+                        </CardText>
+                        <CardText>
+                            <strong>Phone:</strong>
+                            {patientById.phone}
+                        </CardText>
                     </CardBody>
                 </Card>
                 <Card>
                     <CardBody>
-                        <CardTitle tag="h5">Share this patient:</CardTitle>
+                        <CardTitle tag="h5">
+                            <ShareBigIcon /> Share this patient link:
+                        </CardTitle>
                         <CardSubtitle className="mb-2 text-muted" tag="h6">
                             {`${__APP_BASE_URL__}/patient/${patientById.login.uuid}`}
                         </CardSubtitle>
                         <CardText>Copy to clipboard:</CardText>
-                        <Button
-                            onClick={handleCopyToClipboard}
-                            value={`${__APP_BASE_URL__}/patient/${patientById.login.uuid}`}
-                            disabled={!!copiedText}
-                        >
-                            Copy
-                        </Button>
-                        <Button onClick={handleGoBack}>Go Back</Button>
+                        <SharedPatientButtonsContainer>
+                            <Button
+                                onClick={handleCopyToClipboard}
+                                value={`${__APP_BASE_URL__}/patient/${patientById.login.uuid}`}
+                                disabled={!!copiedText}
+                                color="success"
+                                id="copy-to-clipboard"
+                            >
+                                <CopyIcon /> Copy
+                            </Button>
+                            <UncontrolledTooltip
+                                placement="right"
+                                target="copy-to-clipboard"
+                                trigger="click"
+                                color="success"
+                            >
+                                {copiedText ? 'Copied succesfully.' : 'Something went wrong.'}
+                            </UncontrolledTooltip>
+                            <Button onClick={handleGoBack}>
+                                <BackIcon /> Back
+                            </Button>
+                        </SharedPatientButtonsContainer>
                     </CardBody>
                 </Card>
             </CardGroup>

@@ -1,4 +1,4 @@
-import { Modal, ModalHeader } from 'reactstrap'
+import { Modal, ModalFooter, ModalHeader } from 'reactstrap'
 import styled from 'styled-components'
 
 export const ModalPatientContainer = styled.section`
@@ -25,4 +25,17 @@ export const PatientModalHeader = styled(ModalHeader)`
             min-width: 300px;
         }
     }
+`
+
+export const PatientModalFooter = styled(ModalFooter)`
+    justify-content: space-between;
+    svg {
+        transform: translateY(-2px);
+    }
+`
+
+export const PatientModalRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 `

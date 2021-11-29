@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import {
     Nav,
-    Navbar,
     NavbarBrand,
     NavbarToggler,
     UncontrolledDropdown,
@@ -11,10 +10,11 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
+import { ReactComponent as LogoIcon } from '@common/assets/logo.svg'
 import Avatar from '@components/atoms/Avatar'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 
-import { HeaderNavCollapse } from './Header.styles'
+import { HeaderNavBar, HeaderNavCollapse } from './Header.styles'
 
 const Header: React.FC = () => {
     const [shouldToggle, setShouldToggle] = React.useState(false)
@@ -26,14 +26,17 @@ const Header: React.FC = () => {
     const { user, avatar } = useSelector((state: IRootStateWithReducers) => state.configs)
 
     return (
-        <Navbar color="light" expand="md" fixed="top" light>
-            <NavbarBrand href="/">Pharma Inc.</NavbarBrand>
+        <HeaderNavBar color="light" expand="md" fixed="top" light>
+            <NavbarBrand href="/">
+                <LogoIcon /> Pharma Inc.
+            </NavbarBrand>
             <NavbarToggler onClick={handleToggle} />
             <HeaderNavCollapse isOpen={shouldToggle} navbar>
                 <Nav className="me-auto" navbar>
                     <UncontrolledDropdown inNavbar nav>
                         <DropdownToggle caret nav>
                             <Avatar avatarUrl={avatar} avatarSize="thumbnail" />
+                            {'  '}
                             {user}
                         </DropdownToggle>
                         <DropdownMenu end>
@@ -44,7 +47,7 @@ const Header: React.FC = () => {
                     </UncontrolledDropdown>
                 </Nav>
             </HeaderNavCollapse>
-        </Navbar>
+        </HeaderNavBar>
     )
 }
 
