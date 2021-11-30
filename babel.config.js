@@ -58,6 +58,7 @@ module.exports = {
                     '^@store/index': './src/store/index.ts',
                     '^@store/actions/(.+)': './src/store/actions/\\1',
                     '^@store/constants/(.+)': './src/store/constants/\\1',
+                    '^@store/helpers/(.+)': './src/store/helpers/\\1',
                     '^@store/reducers/(.+)': './src/store/reducers/\\1',
                     '^@store/types/(.+)': './src/store/types/\\1',
                 },

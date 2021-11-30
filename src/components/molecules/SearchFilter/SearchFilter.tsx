@@ -12,11 +12,7 @@ import { SearchFilterForm, SubmitSearchButton, SubmitSearchFiltersContainer } fr
 
 const SearchFilter: React.FC = () => {
     const dispatch = useDispatch()
-    const {
-        // info: { page },
-        filters,
-        // search,
-    } = useSelector((state: IRootStateWithReducers) => state.patients)
+    const { filters } = useSelector((state: IRootStateWithReducers) => state.patients)
     const inputReference = React.useRef(null)
     const selectReference = React.useRef(null)
 
@@ -37,11 +33,9 @@ const SearchFilter: React.FC = () => {
         (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             event.preventDefault()
             if (event.currentTarget.name === 'namePill') {
-                console.log(event.currentTarget.value)
                 dispatch(removeSearchFilter(Number.parseInt(event.currentTarget.value, 10)))
             }
             if (event.currentTarget.name === 'nationPill') {
-                console.log(event.currentTarget.name)
                 dispatch(removeSearchFilter(Number.parseInt(event.currentTarget.value, 10)))
             }
             const queryFilters: IFilter[] = [
@@ -49,7 +43,6 @@ const SearchFilter: React.FC = () => {
                 ...filters.slice(Number.parseInt(event.currentTarget.value, 10) + 1),
             ]
             const lastQuery = filters.find(filter => filter.filter !== event.currentTarget.name.split('P')[0])
-            console.log('lastQuery', lastQuery)
             dispatch(getSearchQuerySubmitThunk(lastQuery ? lastQuery.query : '', queryFilters, []))
         },
         [dispatch, filters],
@@ -69,8 +62,8 @@ const SearchFilter: React.FC = () => {
             <FormGroup floating>
                 <Input id="selectFilter" name="selectFilter" type="select" ref={selectReference.current}>
                     <option value=""></option>
-                    <option value="name">Name</option>
-                    <option value="nation">Nationality</option>
+                    {!filters.some(filter => filter.filter === 'name') && <option value="name">Name</option>}
+                    {!filters.some(filter => filter.filter === 'nation') && <option value="nation">Nationality</option>}
                 </Input>
                 <Label for="selectFilter">Filter:</Label>
             </FormGroup>
@@ -89,7 +82,7 @@ const SearchFilter: React.FC = () => {
                     <div>No filters applied</div>
                 )}
             </SubmitSearchFiltersContainer>
-            <SubmitSearchButton type="submit">
+            <SubmitSearchButton type="submit" disabled={filters.length === __MAX_FILTERS_LENGTH__}>
                 <SearchIcon />
             </SubmitSearchButton>
         </SearchFilterForm>

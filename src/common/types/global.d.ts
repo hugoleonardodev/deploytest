@@ -14,7 +14,11 @@ declare const __APP_NAME__: string
 declare const __APP_BASE_URL__: string
 declare const __API_URL__: string
 
-declare const __TWO__ = 2
+declare const __MAX_FILTERS_LENGTH__ = 2
+
+declare const __MIN_PAGE_COUNT_TO_SKIP__ = 11
+declare const __MIN_PAGE_COUNT_TO_PREVIOUS__ = 2
+declare const __MAX_NEXT_PAGES_COUNT__ = 10
 
 declare const __ONE_SECOND__ = 1000
 

@@ -7,3 +7,11 @@ export const HomeMainContainer = styled.main`
         padding: 0;
     }
 `
+export const MobileSubmitSearchFilter = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media only screen and (min-width: 769px) {
+        display: none;
+    }
+`

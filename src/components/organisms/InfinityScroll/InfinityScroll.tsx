@@ -14,11 +14,14 @@ const MIN_SCREEN_HEIGHT = 640
 
 const InfinityScroll: React.FC<TInfinityScrollProperties> = ({ isBottomVisible }) => {
     const dispatch = useDispatch()
-    const { results } = useSelector((state: IRootStateWithReducers) => state.patients)
+    const {
+        info: { page },
+        results,
+    } = useSelector((state: IRootStateWithReducers) => state.patients)
 
     React.useEffect(() => {
-        if (isBottomVisible && window.scrollY > MIN_SCREEN_HEIGHT) dispatch(getPatientsByPageThunk(__TWO__))
-    }, [isBottomVisible, dispatch])
+        if (isBottomVisible && window.scrollY > MIN_SCREEN_HEIGHT) dispatch(getPatientsByPageThunk(page + 1))
+    }, [isBottomVisible, dispatch, page])
 
     return <>{!isBottomVisible && results.length > 0 ? <LoadingMore /> : <Footer />}</>
 }

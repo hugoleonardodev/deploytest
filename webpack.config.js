@@ -54,8 +54,11 @@ const config = function (environment, arguments_) {
                 __IS_PRODUCTION__: JSON.stringify(isProductionEnvironment),
                 __APP_NAME__: JSON.stringify('BoilerPlate'),
                 __APP_BASE_URL__: JSON.stringify('http://localhost:5010'),
-                __TWO__: 2,
                 __ONE_SECOND__: 1000,
+                __MAX_FILTERS_LENGTH__: 2,
+                __MIN_PAGE_COUNT_TO_SKIP__: 11,
+                __MIN_PAGE_COUNT_TO_PREVIOUS__: 2,
+                __MAX_NEXT_PAGES_COUNT__: 10,
                 __200_OK__: 200,
                 __400_BAD_REQUEST__: 400,
                 __404_NOT_FOUND__: 404
