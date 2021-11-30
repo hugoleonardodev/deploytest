@@ -57,7 +57,7 @@ const patientsReducer = (
             return {
                 ...state,
                 search: action.payload.search,
-                filters: [...state.filters, ...action.payload.filters],
+                filters: [...action.payload.filters],
                 results: [...action.payload.results],
                 info: {
                     results: action.payload.info.results,

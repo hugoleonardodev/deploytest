@@ -13,9 +13,9 @@ import { SearchFilterForm, SubmitSearchButton, SubmitSearchFiltersContainer } fr
 const SearchFilter: React.FC = () => {
     const dispatch = useDispatch()
     const {
-        info: { page },
+        // info: { page },
         filters,
-        search,
+        // search,
     } = useSelector((state: IRootStateWithReducers) => state.patients)
     const inputReference = React.useRef(null)
     const selectReference = React.useRef(null)
@@ -28,46 +28,31 @@ const SearchFilter: React.FC = () => {
                 selectFilter: { value: '' | 'name' | 'nation' }
             }
             const queryFilters: IFilter[] = [{ query: target.searchInput.value, filter: target.selectFilter.value }]
-            dispatch(getSearchQuerySubmitThunk(target.searchInput.value, queryFilters))
+            dispatch(getSearchQuerySubmitThunk(target.searchInput.value, queryFilters, filters))
         },
-        [dispatch],
+        [dispatch, filters],
     )
 
     const handleRemoveFilter = React.useCallback(
         (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             event.preventDefault()
-            // const target = event.target as typeof event.target & {
-            //     namePill: { value: string }
-            //     nationPill: { value: string }
-            // }
-            // console.log(target.nationPill.value)
-            // console.log(target.namePill.value)
             if (event.currentTarget.name === 'namePill') {
                 console.log(event.currentTarget.value)
-                // dispatch(removeSearchFilter(Number.parseInt(event.currentTarget.value, 10)))
-                // const queryFilters: IFilter[] = [
-                //     ...filters.slice(0, Number.parseInt(event.currentTarget.value, 10)),
-                //     ...filters.slice(Number.parseInt(event.currentTarget.value, 10) + 1),
-                // ]
-                dispatch(getSearchQuerySubmitThunk(search, filters, page))
+                dispatch(removeSearchFilter(Number.parseInt(event.currentTarget.value, 10)))
             }
             if (event.currentTarget.name === 'nationPill') {
                 console.log(event.currentTarget.name)
                 dispatch(removeSearchFilter(Number.parseInt(event.currentTarget.value, 10)))
-                // const queryFilters: IFilter[] = [
-                //     ...filters.slice(0, Number.parseInt(event.currentTarget.value, 10)),
-                //     ...filters.slice(Number.parseInt(event.currentTarget.value, 10) + 1),
-                // ]
-                // console.log(queryFilters)
-                // dispatch(getSearchQuerySubmitThunk(search, queryFilters))
             }
             const queryFilters: IFilter[] = [
                 ...filters.slice(0, Number.parseInt(event.currentTarget.value, 10)),
                 ...filters.slice(Number.parseInt(event.currentTarget.value, 10) + 1),
             ]
-            dispatch(getSearchQuerySubmitThunk('', queryFilters))
+            const lastQuery = filters.find(filter => filter.filter !== event.currentTarget.name.split('P')[0])
+            console.log('lastQuery', lastQuery)
+            dispatch(getSearchQuerySubmitThunk(lastQuery ? lastQuery.query : '', queryFilters, []))
         },
-        [dispatch, filters, page, search],
+        [dispatch, filters],
     )
     return (
         <SearchFilterForm inline onSubmit={handleSubmit}>

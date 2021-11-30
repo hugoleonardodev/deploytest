@@ -16,16 +16,16 @@ const PaginationPatient: React.FC = () => {
     } = useSelector((state: IRootStateWithReducers) => state.patients)
 
     const handleNextPage = React.useCallback(() => {
-        dispatch(getSearchQuerySubmitThunk(search, filters, page + 1))
+        dispatch(getSearchQuerySubmitThunk(search, filters, filters, page + 1))
     }, [dispatch, filters, page, search])
     const handleNextTenPages = React.useCallback(() => {
-        dispatch(getSearchQuerySubmitThunk(search, filters, page + 10))
+        dispatch(getSearchQuerySubmitThunk(search, filters, filters, page + 10))
     }, [dispatch, filters, page, search])
     const handlePreviousPage = React.useCallback(() => {
-        dispatch(getSearchQuerySubmitThunk(search, filters, page - 1))
+        dispatch(getSearchQuerySubmitThunk(search, filters, filters, page - 1))
     }, [dispatch, filters, page, search])
     const handlePreviousTenPages = React.useCallback(() => {
-        dispatch(getSearchQuerySubmitThunk(search, filters, page - 10))
+        dispatch(getSearchQuerySubmitThunk(search, filters, filters, page - 10))
     }, [dispatch, filters, page, search])
     return (
         <PatientPagination aria-label="pagination" size="lg">
