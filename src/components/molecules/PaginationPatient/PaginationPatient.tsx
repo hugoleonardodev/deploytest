@@ -12,21 +12,21 @@ const PaginationPatient: React.FC = () => {
     const {
         info: { page },
         search,
-        filter,
+        filters,
     } = useSelector((state: IRootStateWithReducers) => state.patients)
 
     const handleNextPage = React.useCallback(() => {
-        dispatch(getSearchQuerySubmitThunk(search, filter, page + 1))
-    }, [dispatch, filter, page, search])
+        dispatch(getSearchQuerySubmitThunk(search, filters, page + 1))
+    }, [dispatch, filters, page, search])
     const handleNextTenPages = React.useCallback(() => {
-        dispatch(getSearchQuerySubmitThunk(search, filter, page + 10))
-    }, [dispatch, filter, page, search])
+        dispatch(getSearchQuerySubmitThunk(search, filters, page + 10))
+    }, [dispatch, filters, page, search])
     const handlePreviousPage = React.useCallback(() => {
-        dispatch(getSearchQuerySubmitThunk(search, filter, page - 1))
-    }, [dispatch, filter, page, search])
+        dispatch(getSearchQuerySubmitThunk(search, filters, page - 1))
+    }, [dispatch, filters, page, search])
     const handlePreviousTenPages = React.useCallback(() => {
-        dispatch(getSearchQuerySubmitThunk(search, filter, page - 10))
-    }, [dispatch, filter, page, search])
+        dispatch(getSearchQuerySubmitThunk(search, filters, page - 10))
+    }, [dispatch, filters, page, search])
     return (
         <PatientPagination aria-label="pagination" size="lg">
             <PaginationItem disabled={page < 11}>

@@ -11,3 +11,9 @@ export const SubmitSearchButton = styled(Button)`
     transform: translateY(-8px);
     height: 56px;
 `
+
+export const SubmitSearchFiltersContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`

@@ -1,14 +1,19 @@
 import { TPatientsActionsCreators } from '@store/constants/patientsTypes'
 import { PatientsDataActions } from '@store/constants/patientsTypes'
 
+export interface IFilter {
+    query: string
+    filter: '' | 'name' | 'nation'
+}
+
 export type TPatientsInitialState = {
     search: string
-    filter: '' | 'name' | 'nation'
+    filters: IFilter[]
 } & PatientsAPI.IPatientRootObject
 
 const initialState: TPatientsInitialState = {
     search: '',
-    filter: '',
+    filters: [],
     results: [],
     info: {
         seed: '',
@@ -23,6 +28,11 @@ const patientsReducer = (
     action: TPatientsActionsCreators,
 ): TPatientsInitialState => {
     switch (action.type) {
+        case PatientsDataActions.REMOVE_SEARCH_FILTER:
+            return {
+                ...state,
+                filters: [...state.filters.slice(0, action.payload), ...state.filters.slice(action.payload + 1)],
+            }
         case PatientsDataActions.INITIAL_LIST_PATIENTS:
             return {
                 ...state,
@@ -47,7 +57,7 @@ const patientsReducer = (
             return {
                 ...state,
                 search: action.payload.search,
-                filter: action.payload.filter,
+                filters: [...state.filters, ...action.payload.filters],
                 results: [...action.payload.results],
                 info: {
                     results: action.payload.info.results,
@@ -56,6 +66,7 @@ const patientsReducer = (
                     version: state.info.version,
                 },
             }
+
         default:
             return state
     }

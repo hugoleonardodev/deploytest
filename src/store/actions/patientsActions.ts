@@ -7,10 +7,11 @@ import { ISetIsLoading } from '@store/constants/configsTypes'
 import {
     IListPatientsAction,
     IPaginationLoadPatientsAction,
+    IRemoveSearchFilterAction,
     ISearchQuerySubmitAction,
     PatientsDataActions,
 } from '@store/constants/patientsTypes'
-import { TPatientsInitialState } from '@store/reducers/patientsReducer'
+import { IFilter, TPatientsInitialState } from '@store/reducers/patientsReducer'
 
 import { setIsLoading } from './configsActions'
 
@@ -118,7 +119,7 @@ const filterByName = (
 ): TPatientsInitialState => {
     const filteredData: TPatientsInitialState = {
         ...data,
-        filter: filter,
+        filters: query !== '' ? [{ query: query, filter: filter }] : [],
         search: query,
         results: [
             ...data.results.filter(
@@ -138,7 +139,7 @@ const filterByNation = (
 ): TPatientsInitialState => {
     const filteredData: TPatientsInitialState = {
         ...data,
-        filter: filter,
+        filters: [{ query: nation, filter: filter }],
         search: nation,
         results: [...data.results.filter(patient => patient.nat === getCountryCodeByName(nation))],
     }
@@ -147,23 +148,33 @@ const filterByNation = (
 export const filterByQuery = (
     data: PatientsAPI.IPatientRootObject,
     query: string,
-    filter: '' | 'name' | 'nation',
+    filters: IFilter[],
 ): TPatientsInitialState => {
-    if (filter === 'name') return filterByName(data, query, filter)
-    if (filter === 'nation') return filterByNation(data, query, filter)
-    return data as TPatientsInitialState
+    let filteredData = {}
+    if (filters.length === 0) filteredData = filterByName(data, query, 'name')
+    if (filters.some(filter => filter.filter === 'name')) filteredData = filterByName(data, query, 'name')
+    if (filters.some(filter => filter.filter === 'nation')) filteredData = filterByNation(data, query, 'nation')
+    // if (filters === 'name') return filterByName(data, query, filters)
+    // if (filters === 'nation') return filterByNation(data, query, filters)
+    return filteredData as TPatientsInitialState
 }
 
 export const getSearchQuerySubmitThunk =
-    (query: string, filter: '' | 'name' | 'nation', page = 1) =>
+    (query: string, filters: IFilter[], page = 1) =>
     async (dispatch: Dispatch<ISearchQuerySubmitAction | ISetIsLoading>): Promise<void> => {
         dispatch(setIsLoading(true))
 
-        const moreFiftyPatientsData = await getSearchQuerySumit(query, filter, page)
+        const filteredPatients = await getSearchQuerySumit(filters, page)
 
-        if (moreFiftyPatientsData.status === __200_OK__) {
-            dispatch(searchQuerySubmit(filterByQuery(moreFiftyPatientsData.data, query, filter)))
+        console.log(filteredPatients)
+        if (filteredPatients.status === __200_OK__) {
+            dispatch(searchQuerySubmit(filterByQuery(filteredPatients.data, query, filters)))
         }
 
         dispatch(setIsLoading(false))
     }
+
+export const removeSearchFilter = (index: number): IRemoveSearchFilterAction => ({
+    type: PatientsDataActions.REMOVE_SEARCH_FILTER,
+    payload: index,
+})
