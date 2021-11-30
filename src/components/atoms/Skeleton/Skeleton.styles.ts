@@ -1,19 +1,21 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 const shimmer = keyframes`
     100% {
         transform: translateX(100%);
     }
 `
+const gradientBackGround = css`
+    background-image: linear-gradient(to left, #dddbdd, #d2d2d2 50%, #dddbdd 75%, #dddbdd 75%);
+`
 
 export const SigleLineSkeleton = styled.span`
     display: inline-block;
-    height: 3rem;
+    height: 3em;
     position: relative;
     overflow: hidden;
     background-color: #dddbdd;
-    min-width: 60px;
-    flex: 1;
+    width: 60px;
 
     &::after {
         position: absolute;
@@ -22,13 +24,7 @@ export const SigleLineSkeleton = styled.span`
         bottom: 0;
         left: 0;
         transform: translateX(-100%);
-        background-image: linear-gradient(
-            90deg,
-            rgba(#fff, 0) 0,
-            rgba(#fff, 0.2) 20%,
-            rgba(#fff, 0.5) 60%,
-            rgba(#fff, 0)
-        );
+        ${gradientBackGround}
         animation: ${shimmer} 1s infinite;
         content: '';
     }

@@ -1,7 +1,9 @@
+import { TPatientsInitialState } from '@store/reducers/patientsReducer'
+
 import { IUserConfigs } from './configsTypes'
 
 export interface IRootStateWithReducers {
     configs: IUserConfigs
-    patients: PatientsAPI.IPatientRootObject
+    patients: TPatientsInitialState
     router: History
 }

@@ -1,15 +1,18 @@
 import { Dispatch } from 'redux'
 
+import getCountryCodeByName from '@common/functions/getCountryCodeByName'
 import { getInitialPatientsList, getPatientsByPage } from '@services/api'
+import getSearchQuerySumit from '@services/api/getSearchQuerySubmit'
 import { ISetIsLoading } from '@store/constants/configsTypes'
-import { PatientsDataActions } from '@store/constants/patientsTypes'
+import {
+    IListPatientsAction,
+    IPaginationLoadPatientsAction,
+    ISearchQuerySubmitAction,
+    PatientsDataActions,
+} from '@store/constants/patientsTypes'
+import { TPatientsInitialState } from '@store/reducers/patientsReducer'
 
 import { setIsLoading } from './configsActions'
-
-export interface IListPatientsAction {
-    type: PatientsDataActions.INITIAL_LIST_PATIENTS
-    payload: PatientsAPI.IPatientRootObject
-}
 
 /**
  * An action to set a list with the first 50 patients from the random user API.
@@ -50,11 +53,6 @@ export const getInitialPatientsListThunk =
 
         dispatch(setIsLoading(false))
     }
-
-export interface IPaginationLoadPatientsAction {
-    type: PatientsDataActions.PAGINATION_LOAD_PATIENTS
-    payload: PatientsAPI.IPatientRootObject
-}
 
 /**
  * An action to append more 50 patients from the random user API.
@@ -102,7 +100,70 @@ export const getPatientsByPageThunk =
     }
 
 /**
- * A union type with all the actions creators for user's configs.
- * In order to pass more than one action to `reducer`, we must group it with one alias.
+ * An action to append more 50 patients from the random user API.
+ * @param patientsData
+ * @endpoint https://randomuser.me/api/?seed=pharma&page=2&results=50
+ * @returns returns an async `redux-thunk` function able to await for data and `dispatch` the result
+ * @see https://randomuser.me/documentation
  */
-export type TPatientsActionsCreators = IListPatientsAction | IPaginationLoadPatientsAction
+export const searchQuerySubmit = (patientsData: TPatientsInitialState): ISearchQuerySubmitAction => ({
+    type: PatientsDataActions.SEARCH_QUERY_SUBMIT,
+    payload: patientsData,
+})
+
+const filterByName = (
+    data: PatientsAPI.IPatientRootObject,
+    query: string,
+    filter: '' | 'name' | 'nation',
+): TPatientsInitialState => {
+    const filteredData: TPatientsInitialState = {
+        ...data,
+        filter: filter,
+        search: query,
+        results: [
+            ...data.results.filter(
+                patient =>
+                    patient.name.first.toLowerCase().includes(query.toLowerCase()) ||
+                    patient.name.last.toLowerCase().includes(query.toLowerCase()),
+            ),
+        ],
+    }
+    return filteredData
+}
+
+const filterByNation = (
+    data: PatientsAPI.IPatientRootObject,
+    nation: string,
+    filter: '' | 'name' | 'nation',
+): TPatientsInitialState => {
+    const filteredData: TPatientsInitialState = {
+        ...data,
+        filter: filter,
+        search: nation,
+        results: [...data.results.filter(patient => patient.nat === getCountryCodeByName(nation))],
+    }
+    return filteredData as TPatientsInitialState
+}
+export const filterByQuery = (
+    data: PatientsAPI.IPatientRootObject,
+    query: string,
+    filter: '' | 'name' | 'nation',
+): TPatientsInitialState => {
+    if (filter === 'name') return filterByName(data, query, filter)
+    if (filter === 'nation') return filterByNation(data, query, filter)
+    return data as TPatientsInitialState
+}
+
+export const getSearchQuerySubmitThunk =
+    (query: string, filter: '' | 'name' | 'nation', page = 1) =>
+    async (dispatch: Dispatch<ISearchQuerySubmitAction | ISetIsLoading>): Promise<void> => {
+        dispatch(setIsLoading(true))
+
+        const moreFiftyPatientsData = await getSearchQuerySumit(query, filter, page)
+
+        if (moreFiftyPatientsData.status === __200_OK__) {
+            dispatch(searchQuerySubmit(filterByQuery(moreFiftyPatientsData.data, query, filter)))
+        }
+
+        dispatch(setIsLoading(false))
+    }

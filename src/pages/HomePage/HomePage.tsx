@@ -8,11 +8,11 @@ import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 const HomePage: React.FC = () => {
     const dispatch = useDispatch()
 
-    const { results } = useSelector((state: IRootStateWithReducers) => state.patients)
+    const { results, search, filter } = useSelector((state: IRootStateWithReducers) => state.patients)
 
     React.useEffect(() => {
-        if (results.length === 0) dispatch(getInitialPatientsListThunk())
-    }, [dispatch, results.length])
+        if (results.length === 0 && (search === '' || filter === '')) dispatch(getInitialPatientsListThunk())
+    }, [dispatch, filter, results.length, search])
 
     return <HomeMain />
 }

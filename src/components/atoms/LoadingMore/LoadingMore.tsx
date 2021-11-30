@@ -6,7 +6,8 @@ import { LoadingMoreContainer } from './LoadingMore.styles'
 const LoadingMore: React.FC = () => {
     return (
         <LoadingMoreContainer>
-            <Spinner /> Keep scolling down for loading more...
+            <Spinner />
+            <p>Keep scolling down for loading more...</p>
         </LoadingMoreContainer>
     )
 }

@@ -4,7 +4,7 @@ import { Button, ModalBody } from 'reactstrap'
 
 import { ReactComponent as CloseIcon } from '@common/assets/close.svg'
 import { ReactComponent as ShareIcon } from '@common/assets/share.svg'
-import { getUsDateFormat } from '@common/functions'
+import { getCountryNameByCode, getUsDateFormat } from '@common/functions'
 import Avatar from '@components/atoms/Avatar'
 
 import {
@@ -59,7 +59,7 @@ const ModalPatient: React.FC<TModalPatientProperties> = ({ children, patient }) 
                             <strong>Date of Birth:{'  '}</strong> {getUsDateFormat(patient.dob.date)}
                         </p>
                         <p>
-                            <strong>Nationality:{'  '}</strong> {patient.nat}
+                            <strong>Nationality:{'  '}</strong> {`${getCountryNameByCode(patient.nat)}, ${patient.nat}`}
                         </p>
                     </PatientModalRow>
                     <p>

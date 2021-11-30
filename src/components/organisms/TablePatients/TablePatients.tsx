@@ -8,6 +8,7 @@ import { ReactComponent as ShareIcon } from '@common/assets/share.svg'
 import { getUsDateFormat } from '@common/functions'
 import Skeleton from '@components/atoms/Skeleton'
 import ModalPatient from '@components/molecules/ModalPatient'
+import NotFound from '@components/molecules/NotFound'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 
 import { TableRow } from './Table.styles'
@@ -17,6 +18,7 @@ const skeletonsLines = [...Array.from({ length: TEN }).keys()]
 
 const TablePatients: React.FC = () => {
     const { results } = useSelector((state: IRootStateWithReducers) => state.patients)
+    const { isLoading } = useSelector((state: IRootStateWithReducers) => state.configs)
     const history = useHistory()
     const hanldeSharePatient = React.useCallback(
         (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -24,6 +26,9 @@ const TablePatients: React.FC = () => {
         },
         [history],
     )
+    if (results.length === 0) {
+        return <NotFound patient />
+    }
     return (
         <Table responsive>
             <thead>
@@ -36,7 +41,7 @@ const TablePatients: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {results.length === 0
+                {isLoading
                     ? skeletonsLines.map((skeleton, index) => (
                           <tr key={`patient-${index}-#${skeleton}`}>
                               <th scope="row">{index + 1}</th>

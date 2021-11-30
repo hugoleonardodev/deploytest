@@ -18,7 +18,7 @@ import { ReactComponent as CopyIcon } from '@common/assets/copy.svg'
 import { ReactComponent as LocationIcon } from '@common/assets/location.svg'
 import { ReactComponent as ProfileIcon } from '@common/assets/profile.svg'
 import { ReactComponent as ShareBigIcon } from '@common/assets/share_big.svg'
-import { getUsDateFormat } from '@common/functions'
+import { getCountryNameByCode, getUsDateFormat } from '@common/functions'
 import { useCopyToClipboard } from '@common/hooks'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 
@@ -64,7 +64,8 @@ const SharePatient: React.FC<TSharedPatient> = () => {
                             <strong>Date of Birth:</strong> {getUsDateFormat(patientById.dob.date)}
                         </CardText>
                         <CardText>
-                            <strong>Nationality:</strong> {patientById.nat}
+                            <strong>Nationality:</strong>{' '}
+                            {`${getCountryNameByCode(patientById.nat)}, ${patientById.nat}`}
                         </CardText>
                         <CardText>
                             <strong>E-mail:{'  '}</strong>

@@ -1,7 +1,14 @@
 import React from 'react'
 
+import PaginationPatient from '../PaginationPatient'
+
 const Footer: React.FC = () => {
-    return <footer>Pharma Inc.</footer>
+    return (
+        <footer>
+            <PaginationPatient />
+            Pharma Inc.
+        </footer>
+    )
 }
 
 export default Footer
