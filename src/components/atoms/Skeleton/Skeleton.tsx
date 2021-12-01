@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { SigleLineSkeleton } from './Skeleton.styles'
+import { SigleLineSkeleton, TSigleLineSkeletonProperties } from './Skeleton.styles'
 
-const Skeleton: React.FC = () => {
-    return <SigleLineSkeleton />
+const Skeleton: React.FC<TSigleLineSkeletonProperties> = ({ isLarge }) => {
+    return <SigleLineSkeleton isLarge={isLarge} />
 }
 
 export default Skeleton

@@ -9,13 +9,17 @@ const gradientBackGround = css`
     background-image: linear-gradient(to left, #dddbdd, #d2d2d2 50%, #dddbdd 75%, #dddbdd 75%);
 `
 
-export const SigleLineSkeleton = styled.span`
+export type TSigleLineSkeletonProperties = {
+    isLarge?: boolean
+}
+
+export const SigleLineSkeleton = styled.span<TSigleLineSkeletonProperties>`
     display: inline-block;
-    height: 3em;
+    height: 2em;
     position: relative;
     overflow: hidden;
     background-color: #dddbdd;
-    width: 60px;
+    width: ${properties => (properties.isLarge ? '108px' : '60px')};
 
     &::after {
         position: absolute;

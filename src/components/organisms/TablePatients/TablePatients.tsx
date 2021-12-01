@@ -17,7 +17,7 @@ const TEN = 10
 const skeletonsLines = [...Array.from({ length: TEN }).keys()]
 
 const TablePatients: React.FC = () => {
-    const { results } = useSelector((state: IRootStateWithReducers) => state.patients)
+    const { search, results } = useSelector((state: IRootStateWithReducers) => state.patients)
     const { isLoading } = useSelector((state: IRootStateWithReducers) => state.configs)
     const history = useHistory()
     const hanldeSharePatient = React.useCallback(
@@ -26,7 +26,7 @@ const TablePatients: React.FC = () => {
         },
         [history],
     )
-    if (results.length === 0) {
+    if (results.length === 0 && search !== '') {
         return <NotFound patient />
     }
     return (
@@ -41,12 +41,12 @@ const TablePatients: React.FC = () => {
                 </tr>
             </thead>
             <tbody>
-                {isLoading
+                {isLoading || results.length === 0
                     ? skeletonsLines.map((skeleton, index) => (
                           <tr key={`patient-${index}-#${skeleton}`}>
                               <th scope="row">{index + 1}</th>
                               <td>
-                                  <Skeleton />
+                                  <Skeleton isLarge />
                               </td>
                               <td>
                                   <Skeleton />
