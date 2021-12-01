@@ -56,6 +56,7 @@ const SearchFilter: React.FC = () => {
                     placeholder="Search for..."
                     type="text"
                     ref={inputReference.current}
+                    aria-labelledby="search-button"
                 />
                 <Label for="searchInput">Search for...</Label>
             </FormGroup>{' '}
@@ -82,7 +83,12 @@ const SearchFilter: React.FC = () => {
                     <div>No filters applied</div>
                 )}
             </SubmitSearchFiltersContainer>
-            <SubmitSearchButton type="submit" disabled={filters.length === __MAX_FILTERS_LENGTH__}>
+            <SubmitSearchButton
+                type="submit"
+                disabled={filters.length === __MAX_FILTERS_LENGTH__}
+                id="search-button"
+                aria-label="Search Button"
+            >
                 <SearchIcon />
             </SubmitSearchButton>
         </SearchFilterForm>
