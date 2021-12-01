@@ -1,7 +1,7 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
-import { Button, Table } from 'reactstrap'
+import { Button, DropdownItem, DropdownMenu, DropdownToggle, Table, UncontrolledDropdown } from 'reactstrap'
 
 import { ReactComponent as EyeIcon } from '@common/assets/red_eye.svg'
 import { ReactComponent as ShareIcon } from '@common/assets/share.svg'
@@ -11,17 +11,23 @@ import { getUsDateFormat, selectSortOrder } from '@common/functions'
 import Skeleton from '@components/atoms/Skeleton'
 import ModalPatient from '@components/molecules/ModalPatient'
 import NotFound from '@components/molecules/NotFound'
+import { getPatientsByPageThunk } from '@store/actions/patientsActions'
 import { IRootStateWithReducers } from '@store/constants/_rootReducerTypes'
 
 import { NameTh, TableRow } from './Table.styles'
 
-const TEN = 10
-const skeletonsLines = [...Array.from({ length: TEN }).keys()]
+const TWENTY = 20
+const skeletonsLines = [...Array.from({ length: TWENTY }).keys()]
 const FIVE = 5
 const skeletonsRows = [...Array.from({ length: FIVE }).keys()]
 
 const TablePatients: React.FC = () => {
-    const { search, results } = useSelector((state: IRootStateWithReducers) => state.patients)
+    const dispatch = useDispatch()
+    const {
+        info: { page },
+        search,
+        results,
+    } = useSelector((state: IRootStateWithReducers) => state.patients)
     const { isLoading } = useSelector((state: IRootStateWithReducers) => state.configs)
     const history = useHistory()
     const [shouldSort, setShouldSort] = React.useState(false)
@@ -37,6 +43,14 @@ const TablePatients: React.FC = () => {
         setIsAscendent(!isAscendent)
     }, [isAscendent, results, shouldSort])
 
+    const handleGenderFilter = React.useCallback(
+        (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            const textContent = event.currentTarget.textContent
+            if (textContent === 'any') return dispatch(getPatientsByPageThunk(page, ''))
+            return dispatch(getPatientsByPageThunk(page, textContent?.toLowerCase()))
+        },
+        [dispatch, page],
+    )
     if (results.length === 0 && search !== '') {
         return <NotFound patient />
     }
@@ -53,7 +67,26 @@ const TablePatients: React.FC = () => {
                             <SortUpIcon onClick={handleSortName} />
                         )}
                     </NameTh>
-                    <th>Gender</th>
+                    <th>
+                        <UncontrolledDropdown>
+                            <DropdownToggle caret nav>
+                                Gender
+                            </DropdownToggle>
+                            <DropdownMenu end>
+                                <DropdownItem onClick={handleGenderFilter} defaultValue="female">
+                                    Female
+                                </DropdownItem>
+                                <DropdownItem divider />
+                                <DropdownItem onClick={handleGenderFilter} defaultValue="male">
+                                    Male
+                                </DropdownItem>
+                                <DropdownItem divider />
+                                <DropdownItem onClick={handleGenderFilter} defaultValue="">
+                                    Any
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                    </th>
                     <th>Birth</th>
                     <th>Actions</th>
                 </tr>

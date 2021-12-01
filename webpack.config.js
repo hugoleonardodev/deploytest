@@ -54,6 +54,7 @@ const config = function (environment, arguments_) {
                 __IS_PRODUCTION__: JSON.stringify(isProductionEnvironment),
                 __APP_NAME__: JSON.stringify('BoilerPlate'),
                 __APP_BASE_URL__: JSON.stringify('http://localhost:5010'),
+                __API_BASE_URL__: JSON.stringify('https://randomuser.me/api/?seed=PharmaInc&results=50'),
                 __ONE_SECOND__: 1000,
                 __MAX_FILTERS_LENGTH__: 2,
                 __MIN_PAGE_COUNT_TO_SKIP__: 11,

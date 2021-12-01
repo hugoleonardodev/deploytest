@@ -1,4 +1,4 @@
-import { ConfigsDataActions, ISetIsLoading, ISwitchThemeAction } from '@store/constants/configsTypes'
+import { ConfigsDataActions, ISetIsLoading, ISwitchThemeAction, IUpdateApiQuery } from '@store/constants/configsTypes'
 
 /**
  * An action to set a list with the first 50 patients from the random user API.
@@ -47,8 +47,7 @@ export const setIsLoading = (isLoading: boolean): ISetIsLoading => ({
     payload: isLoading,
 })
 
-/**
- * A union type with all the actions creators for user's configs.
- * In order to pass more than one action to `reducer`, we must group it with one alias.
- */
-export type TConfigsActionsCreators = ISwitchThemeAction | ISetIsLoading
+export const updateApiQuery = (apiQuery: string): IUpdateApiQuery => ({
+    type: ConfigsDataActions.UPDATE_API_QUERY,
+    payload: apiQuery,
+})

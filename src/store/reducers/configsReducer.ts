@@ -1,5 +1,4 @@
-import { TConfigsActionsCreators } from '@store/actions/configsActions'
-import { ConfigsDataActions, IUserConfigs } from '@store/constants/configsTypes'
+import { ConfigsDataActions, IUserConfigs, TConfigsActionsCreators } from '@store/constants/configsTypes'
 
 const initialState = {
     user: 'Hugo Leonardo',
@@ -7,6 +6,7 @@ const initialState = {
     avatar: 'https://github.com/hugoleonardodev.png',
     isDarkTheme: false,
     isLoading: true,
+    apiQuery: '',
 }
 
 const configsReducer = (state: IUserConfigs = initialState, action: TConfigsActionsCreators): IUserConfigs => {
@@ -15,6 +15,8 @@ const configsReducer = (state: IUserConfigs = initialState, action: TConfigsActi
             return { ...state, isDarkTheme: action.payload }
         case ConfigsDataActions.SET_IS_LOADING:
             return { ...state, isLoading: action.payload }
+        case ConfigsDataActions.UPDATE_API_QUERY:
+            return { ...state, apiQuery: action.payload }
         default:
             return state
     }

@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 
 import { getInitialPatientsList, getPatientsByPage } from '@services/api'
 import getSearchQuerySumit from '@services/api/getSearchQuerySubmit'
-import { ISetIsLoading } from '@store/constants/configsTypes'
+import { ISetIsLoading, IUpdateApiQuery } from '@store/constants/configsTypes'
 import {
     IListPatientsAction,
     IPaginationLoadPatientsAction,
@@ -13,7 +13,7 @@ import {
 import { filterByQuery } from '@store/helpers/filterByQuery'
 import { IFilter, TPatientsInitialState } from '@store/reducers/patientsReducer'
 
-import { setIsLoading } from './configsActions'
+import { setIsLoading, updateApiQuery } from './configsActions'
 
 /**
  * An action to set a list with the first 50 patients from the random user API.
@@ -45,8 +45,10 @@ export const initialListPatients = (patientsData: PatientsAPI.IPatientRootObject
  */
 export const getInitialPatientsListThunk =
     () =>
-    async (dispatch: Dispatch<IListPatientsAction | ISetIsLoading>): Promise<void> => {
+    async (dispatch: Dispatch<IListPatientsAction | ISetIsLoading | IUpdateApiQuery>): Promise<void> => {
         const firstFiftyPatientsData = await getInitialPatientsList()
+
+        dispatch(updateApiQuery(firstFiftyPatientsData.request.responseURL))
 
         if (firstFiftyPatientsData.status === __200_OK__) {
             dispatch(initialListPatients(firstFiftyPatientsData.data))
@@ -87,11 +89,13 @@ export const paginationLoadPatients = (
  *  }
  */
 export const getPatientsByPageThunk =
-    (page = 1) =>
-    async (dispatch: Dispatch<IPaginationLoadPatientsAction | ISetIsLoading>): Promise<void> => {
+    (page = 1, gender = '') =>
+    async (dispatch: Dispatch<IPaginationLoadPatientsAction | ISetIsLoading | IUpdateApiQuery>): Promise<void> => {
         dispatch(setIsLoading(true))
 
-        const moreFiftyPatientsData = await getPatientsByPage(page)
+        const moreFiftyPatientsData = await getPatientsByPage(page, gender)
+
+        dispatch(updateApiQuery(moreFiftyPatientsData.request.responseURL))
 
         if (moreFiftyPatientsData.status === __200_OK__) {
             dispatch(paginationLoadPatients(moreFiftyPatientsData.data))
@@ -114,10 +118,12 @@ export const searchQuerySubmit = (patientsData: TPatientsInitialState): ISearchQ
 
 export const getSearchQuerySubmitThunk =
     (query: string, queryFilters: IFilter[], filters: IFilter[], page = 1) =>
-    async (dispatch: Dispatch<ISearchQuerySubmitAction | ISetIsLoading>): Promise<void> => {
+    async (dispatch: Dispatch<ISearchQuerySubmitAction | ISetIsLoading | IUpdateApiQuery>): Promise<void> => {
         dispatch(setIsLoading(true))
 
         const filteredPatients = await getSearchQuerySumit(queryFilters, page)
+
+        dispatch(updateApiQuery(filteredPatients.request.responseURL))
 
         if (filteredPatients.status === __200_OK__) {
             dispatch(searchQuerySubmit(filterByQuery(filteredPatients.data, query, queryFilters, filters)))

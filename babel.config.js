@@ -61,6 +61,7 @@ module.exports = {
                     '^@store/helpers/(.+)': './src/store/helpers/\\1',
                     '^@store/reducers/(.+)': './src/store/reducers/\\1',
                     '^@store/types/(.+)': './src/store/types/\\1',
+                    '^@types/(.+)': './src/types/\\1',
                 },
             },
         ],

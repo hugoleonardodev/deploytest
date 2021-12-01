@@ -15,7 +15,7 @@ const generateQueryFilter = (filters: IFilter[]) => {
 const getSearchQuerySumit = async (filters: IFilter[], page = 1): Promise<AxiosResponse<never>> => {
     const queryFilter = generateQueryFilter(filters)
 
-    const url = `https://randomuser.me/api/?seed=pharma${queryFilter}&page=${page}&results=50`
+    const url = `${__API_BASE_URL__}${queryFilter}&page=${page}`
 
     const result = await axios({
         url,
