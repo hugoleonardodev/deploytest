@@ -13,3 +13,15 @@ export const TableRow = styled.tr`
         }
     }
 `
+
+export const NameTh = styled.th`
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    svg {
+        cursor: pointer;
+        height: 20px;
+        width: 20px;
+        fill: #212529;
+    }
+`

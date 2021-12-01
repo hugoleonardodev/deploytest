@@ -1,4 +1,4 @@
-import getCountryCodeByName from '@common/functions/getCountryCodeByName'
+import { getCountryCodeByName } from '@common/functions'
 import { IFilter, TPatientsInitialState } from '@store/reducers/patientsReducer'
 
 export const filterByNation = (
